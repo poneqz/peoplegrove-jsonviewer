@@ -1,0 +1,58 @@
+/* Remove default bullets */
+ul,
+#JsonViewer {
+  list-style-type: none;
+}
+
+/* Remove margins and padding from the parent ul */
+#JsonViewer {
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Style the caret/arrow */
+.caret {
+  cursor: pointer;
+  user-select: none; /* Prevent text selection */
+  background: red;
+}
+
+/* Create the caret/arrow with a unicode, and style it */
+.caret::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+/* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+.caret-down::before {
+  transform: rotate(90deg);
+}
+
+/* Hide the nested list */
+.nested {
+  display: none;
+  margin-left: 16px;
+}
+
+/* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+.active {
+  display: block;
+}
+
+.node {
+  color: #2ecc71;
+  &::before {
+    content: "+ ";
+  }
+  &.node-down::before {
+    content: "- ";
+  }
+}
+
+.leaf {
+  color: #9b59b6;
+}
