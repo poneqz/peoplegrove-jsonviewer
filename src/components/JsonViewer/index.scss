@@ -5,11 +5,33 @@ ul,
 }
 
 /* Remove margins and padding from the parent ul */
-#JsonViewer {
+button {
+  margin-top: 1rem;
+  background: #2980b9;
+  color: white;
+  border: none;
+  padding: 0.6rem;
+  opacity: 0.8;
+  cursor: pointer;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.JsonViewer__container {
   margin: 0;
   padding: 0;
   flex: 1;
+}
+
+#JsonViewer {
+  // margin: 0;
+  // padding: 0;
+  // flex: 1;
   overflow-y: auto;
+  background: black;
+  margin-top: 1rem;
+  padding-left: 1rem;
 }
 
 /* Style the caret/arrow */
@@ -51,8 +73,10 @@ ul,
   &.node-down::before {
     content: "- ";
   }
+  padding-left: 1rem;
 }
 
 .leaf {
   color: #9b59b6;
+  padding-left: 1rem;
 }

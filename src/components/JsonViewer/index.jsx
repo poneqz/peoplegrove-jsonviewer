@@ -7,10 +7,9 @@ class JsonViewer extends PureComponent {
       if (object[key] === null) {
         object[key] = "NULL";
       }
-      const displayKey = !this.isArray(object[key]) ? key : `${key} []`;
       return (
         <li key={key + reactKey} className={"parent"}>
-          {this.buildNode(displayKey)}
+          {this.buildNode(key, object[key])}
           <ul className="nested">
             {this.isPrimative(object[key])
               ? this.buildLeaf(object[key])
@@ -43,7 +42,19 @@ class JsonViewer extends PureComponent {
     );
   };
 
-  buildNode = (key) => {
+  getType = (input) => {
+    return typeof input === "string"
+      ? "string"
+      : typeof input === "number"
+      ? "number"
+      : typeof input === "boolean"
+      ? "boolean"
+      : this.isArray(input)
+      ? "array"
+      : "object";
+  };
+
+  buildNode = (key, value) => {
     return (
       <span
         className="node"
@@ -51,20 +62,14 @@ class JsonViewer extends PureComponent {
           this.toggle(e);
         }}
       >
-        {key}
+        {key} : <b> [{this.getType(value)}] </b>
       </span>
     );
   };
 
   buildLeaf = (value) => (
-    <li
-      className="leaf"
-      onClick={
-        // tslint:disable-next-line:no-empty
-        () => {}
-      }
-    >
-      {value}
+    <li className="leaf" onClick={() => {}}>
+      {typeof value === "boolean" ? (value === true ? `true` : `false`) : value}
     </li>
   );
 
@@ -75,12 +80,33 @@ class JsonViewer extends PureComponent {
     event.target.classList.toggle("node-down");
   };
 
+  isEmptyObject = (value) => {
+    return Object.keys(value).length === 0 && value.constructor === Object;
+  };
+
+  greenStyle = { color: "#2ecc71" };
+
   render() {
     const { data } = this.props;
     return (
-      <>
-        <ul id="JsonViewer">{this.processObject(data)}</ul>
-      </>
+      <div className="JsonViewer__container">
+        <button
+          onClick={() =>
+            navigator.clipboard.writeText(JSON.stringify(data, undefined, 4))
+          }
+        >
+          Copy to Clipboard
+        </button>
+        {!this.isEmptyObject(data) ? (
+          <ul id="JsonViewer">
+            {" "}
+            <li style={this.greenStyle}> {"{"} </li> {this.processObject(data)}{" "}
+            <li style={this.greenStyle}> {"}"} </li>{" "}
+          </ul>
+        ) : (
+          ""
+        )}
+      </div>
     );
   }
 }
